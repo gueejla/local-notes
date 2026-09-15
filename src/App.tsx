@@ -32,10 +32,6 @@ export default function App() {
     await refresh();
   };
 
-  const nextTheme = () => {
-    setTheme(THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length]);
-  };
-
   return (
     <div className="app data-theme">
       <h1>local notes</h1>
