@@ -18,7 +18,7 @@ export async function listNotes(): Promise<Note[]> {
   const dir = await getNotesDir();
   const notes: Note[] = [];
   // async iteration over the directory entries
-  for await (const [name, handle] of (dir as any).entries()) {
+  for await (const [name, handle] of dir.entries()) {
     if (handle.kind === "file" && name.endsWith(".json")) {
       const file = await handle.getFile();
       notes.push(JSON.parse(await file.text()) as Note);

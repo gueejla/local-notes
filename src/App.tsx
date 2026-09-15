@@ -20,7 +20,9 @@ export default function App() {
     setNotes(await listNotes());
   }, []);
 
-  useEffect(() => { void refresh(); }, [refresh]);
+  useEffect(() => {
+    void listNotes().then(setNotes);
+  }, []);
 
   const newNote = () =>
     setDraft({ id: crypto.randomUUID(), title: "", body: "", updatedAt: Date.now(), createdAt: Date.now() });
