@@ -58,9 +58,9 @@ export default function App() {
         <button onClick={newNote}>+ New note</button>
       )}
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <ul className="note-list">
         {notes.map((n) => (
-          <li key={n.id} style={{ borderBottom: "1px solid #ddd", padding: 8 }}>
+          <li key={n.id} className="note-item">
             <strong>{n.title || "(untitled)"}</strong>
             <p>{n.body.slice(0, 120)}</p>
             <button onClick={() => setDraft(n)}>Edit</button>{" "}

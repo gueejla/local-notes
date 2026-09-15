@@ -46,6 +46,11 @@ input, textarea, button {
   padding: 4px 10px;
 }
 
+.note-list {
+  list-style: none;
+  padding: 0;
+}
+
 .note-item {
   border-bottom: 1px solid var(--border);
   padding: 8px;
@@ -91,11 +96,11 @@ select:focus {
 }
 
 .title-input {
-  font-size: 18;
+  font-size: 18px;
   width: 100%;
 }
 
 .body-input {
   width: 100%;
-  margin-top: 8;
+  margin-top: 8px;
 }
