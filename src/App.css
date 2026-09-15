@@ -49,6 +49,7 @@ input, textarea, button {
 .note-list {
   list-style: none;
   padding: 0;
+  text-align: center;
 }
 
 .note-item {
@@ -93,6 +94,7 @@ select:focus {
   max-width: 640px;
   margin: auto;
   padding: 16px;
+  text-align: center;
 }
 
 .title-input {
