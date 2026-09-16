@@ -11,6 +11,7 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>(() => {
     return (localStorage.getItem("theme") as Theme) || "light";
   });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -36,48 +37,99 @@ export default function App() {
   };
 
   return (
-    <div className="app data-theme">
-      <h1>local notes</h1>
+    <>
+      <button
+        className="sidebar-toggle"
+        aria-expanded={sidebarOpen}
+        aria-controls="app-sidebar"
+        onClick={() => setSidebarOpen((o) => !o)}
+        title="Menu"
+      >
+        {sidebarOpen ? "✕" : "☰"}
+      </button>
 
-      {draft ? (
-        <div>
-          <input
-            placeholder="Title"
-            value={draft.title}
-            onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-            className="title-input"
-          />
-          <textarea
-            placeholder="Write your note…"
-            rows={10}
-            value={draft.body}
-            onChange={(e) => setDraft({ ...draft, body: e.target.value })}
-            className="body-input"
-          />
-          <button onClick={persist}>Save</button>
-          <button onClick={() => setDraft(null)}>Cancel</button>
-        </div>
-      ) : (
-        <button onClick={newNote}>+ New note</button>
+      <aside id="app-sidebar" className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+        <section className="sidebar-section">
+          <h2>Theme</h2>
+          <label htmlFor="theme-select" className="visually-hidden">
+            Theme
+          </label>
+          <select
+            id="theme-select"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value as Theme)}
+          >
+            {THEMES.map((t) => (
+              <option key={t} value={t}>
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+              </option>
+            ))}
+          </select>
+        </section>
+
+        <section className="sidebar-section">
+          <h2>Export</h2>
+          <button onClick={() => exportNotesToZip().catch((e) => alert(String(e)))}>
+            Export all notes (.zip)
+          </button>
+        </section>
+
+        {/* Future sections go here — e.g. Import, Settings, About */}
+      </aside>
+
+      {sidebarOpen && (
+        <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
       )}
 
-      <ul className="note-list">
-        {notes.map((n) => (
-          <li key={n.id} className="note-item">
-            <div className="note-header">
-              <strong>{n.title || "(untitled)"}</strong>
-              <time dateTime={new Date(n.updatedAt).toISOString()}>
-                {new Date(n.updatedAt).toLocaleString()}
-              </time>
-            </div>
-            <p>{n.body.slice(0, 120)}</p>
-            <button onClick={() => setDraft(n)}>Edit</button>{" "}
-            <button onClick={async () => { await deleteNote(n.id); await refresh(); }}>
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+      <main className="app">
+        <h1>local notes</h1>
+
+        {draft ? (
+          <div>
+            <input
+              placeholder="Title"
+              value={draft.title}
+              onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+              className="title-input"
+            />
+            <textarea
+              placeholder="Write your note…"
+              rows={10}
+              value={draft.body}
+              onChange={(e) => setDraft({ ...draft, body: e.target.value })}
+              className="body-input"
+            />
+            <button onClick={persist}>Save</button>
+            <button onClick={() => setDraft(null)}>Cancel</button>
+          </div>
+        ) : (
+          <button onClick={newNote}>+ New note</button>
+        )}
+
+        <ul className="note-list">
+          {notes.map((n) => (
+            <li key={n.id} className="note-item">
+              <div className="note-header">
+                <strong>{n.title || "(untitled)"}</strong>
+                <time dateTime={new Date(n.updatedAt).toISOString()}>
+                  {new Date(n.updatedAt).toLocaleString()}
+                </time>
+              </div>
+              <p>{n.body.slice(0, 120)}</p>
+              <button onClick={() => setDraft(n)}>Edit</button>{" "}
+              <button
+                onClick={async () => {
+                  await deleteNote(n.id);
+                  await refresh();
+                }}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </main>
+
       <footer className="app-footer">
         <p>
           Your notes on your device ·{" "}
@@ -86,25 +138,10 @@ export default function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            GitHub 
+            GitHub
           </a>
-        </p>·{" "}
-        <label htmlFor="theme-select">Theme: </label>
-        <select
-          id="theme-select"
-          value={theme}
-          onChange={(e) => setTheme(e.target.value as Theme)}
-        >
-          {THEMES.map((t) => (
-            <option key={t} value={t}>
-              {t.charAt(0).toUpperCase() + t.slice(1)}
-            </option>
-          ))}
-        </select>
-        <button onClick={() => exportNotesToZip().catch((e) => alert(String(e)))}>
-          Export all notes (.zip)
-        </button>
+        </p>
       </footer>
-    </div>
+    </>
   );
 }
