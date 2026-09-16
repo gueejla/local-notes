@@ -1,0 +1,75 @@
+/* Base: left (default) — your existing .note-header column layout stays */
+[data-align="center"] .note-header,
+[data-align="center"] .note-body {
+  text-align: center;
+  align-items: center;
+}
+
+[data-align="right"] .note-header,
+[data-align="right"] .note-body {
+  text-align: right;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+[data-align="left"] .note-header {
+  /* collapse back to one row, title left / timestamp right */
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+[data-align="left"] .note-header time {
+  margin-top: 0; /* undo the stacked-mode gap */
+}
+
+[data-align="left"] .note-body {
+  text-align: left;
+}
+
+[data-align="between"] .note-header,
+[data-align="between"] .note-body {
+  text-align: justify;
+  align-items: center;
+  justify-content: space-between;
+  
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+[data-align="between"] .note-header time {
+  margin-top: 0; /* undo the stacked-mode gap */
+}
+
+.note-list {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+.note-item {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.note-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+}
+
+.note-header time {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.note-body {
+  white-space: pre-wrap;   /* preserves newlines and wraps long lines */
+  overflow-wrap: break-word; /* breaks very long unbroken strings (URLs etc.) */
+  margin: 8px 0;
+}

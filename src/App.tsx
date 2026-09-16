@@ -1,36 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
-import { type Note, listNotes, saveNote, deleteNote } from "./lib/opfs";
-import { exportNotesToZip } from "@/lib/export";
-import { NoteItem } from "@/components/note/note";
+import { type Note, listNotes, saveNote, deleteNote } from "@/lib/opfs";
+import { NoteItem } from "@/components/note/";
+import { Sidebar } from "./components/sidebar";
 
-type Theme = "light" | "dark" | "solarized" | "cozy";
-const THEMES: Theme[] = ["light", "dark", "solarized", "cozy"];
-
-type Align = "left" | "center" | "right" | "between";
-const ALIGNS: { value: Align; label: string }[] = [
-  { value: "left", label: "Left" },
-  { value: "center", label: "Centered" },
-  { value: "right", label: "Right" },
-  { value: "between", label: "Space between" },
-];
+import '@/App.css'
+import '@/components/note/note.css'
+import '@/components/sidebar/sidebar.css'
+import '@/components/sidebar/colorThemes.css'
 
 export default function App() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [draft, setDraft] = useState<Note | null>(null);
-  const [theme, setTheme] = useState<Theme>(() => {
-    return (localStorage.getItem("theme") as Theme) || "light";
-  });
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [align, setAlign] = useState<Align>(() => {
-    return (localStorage.getItem("align") as Align) || "left"
-  });
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem("theme", theme);
-    document.documentElement.dataset.align = align; // ← add
-    localStorage.setItem("align", align);           // ← add
-  }, [theme, align]);
 
   const refresh = useCallback(async () => {
     setNotes(await listNotes());
@@ -62,50 +43,9 @@ export default function App() {
         {sidebarOpen ? "✕" : "☰"}
       </button>
 
-      <aside id="app-sidebar" className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <section className="sidebar-section">
-          <h2>Theme</h2>
-          <label htmlFor="theme-select" className="visually-hidden">
-            Theme
-          </label>
-          <select
-            id="theme-select"
-            value={theme}
-            onChange={(e) => setTheme(e.target.value as Theme)}
-          >
-            {THEMES.map((t) => (
-              <option key={t} value={t}>
-                {t.charAt(0).toUpperCase() + t.slice(1)}
-              </option>
-            ))}
-          </select>
-        </section>
-
-        <section className="sidebar-section">
-          <h2>Export</h2>
-          <button onClick={() => exportNotesToZip().catch((e) => alert(String(e)))}>
-            Export all notes (.zip)
-          </button>
-        </section>
-
-        <section className="sidebar-section">
-          <h2>Text alignment</h2>
-          {ALIGNS.map(({ value, label }) => (
-            <label key={value} className="align-option">
-              <input
-                type="radio"
-                name="align"
-                value={value}
-                checked={align === value}
-                onChange={() => setAlign(value)}
-              />
-              {label}
-            </label>
-          ))}
-        </section>
-
-        {/* Future sections go here — e.g. Import, Settings, About */}
-      </aside>
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+      />
 
       {sidebarOpen && (
         <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />

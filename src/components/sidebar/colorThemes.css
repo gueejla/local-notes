@@ -1,0 +1,33 @@
+:root, [data-theme="light"] {
+  --bg: #ffffff;
+  --text: #1c1c1c;
+  --border: #ddd;
+  --accent: #2563eb;
+  --input-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+  --bg: #121212;
+  --text: #e6e6e6;
+  --border: #333;
+  --accent: #60a5fa;
+  --input-bg: #1e1e1e;
+}
+
+/* Solarized Light palette */
+[data-theme="solarized"] {
+  --bg: #fdf6e3;
+  --text: #657b83;
+  --border: #eee8d5;
+  --accent: #268bd2;
+  --input-bg: #fffbf0;
+}
+
+/* Cozy — warm browns, sage greens, muted blues */
+[data-theme="cozy"] {
+  --bg: #f4efe6;        /* warm cream/linen */
+  --text: #4a3f35;      /* soft espresso brown */
+  --border: #d8cbb8;    /* light sand */
+  --accent: #6b8e6f;    /* sage green */
+  --input-bg: #faf6ee;  /* off-white parchment */
+}
