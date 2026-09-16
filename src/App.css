@@ -57,6 +57,22 @@ input, textarea, button {
   padding: 8px;
 }
 
+.note-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+}
+
+.note-header time {
+  position: absolute;
+  right: 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
 select {
   background: var(--input-bg);
   color: var(--text);

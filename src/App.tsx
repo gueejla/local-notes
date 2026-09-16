@@ -63,7 +63,12 @@ export default function App() {
       <ul className="note-list">
         {notes.map((n) => (
           <li key={n.id} className="note-item">
-            <strong>{n.title || "(untitled)"}</strong>
+            <div className="note-header">
+              <strong>{n.title || "(untitled)"}</strong>
+              <time dateTime={new Date(n.updatedAt).toISOString()}>
+                {new Date(n.updatedAt).toLocaleString()}
+              </time>
+            </div>
             <p>{n.body.slice(0, 120)}</p>
             <button onClick={() => setDraft(n)}>Edit</button>{" "}
             <button onClick={async () => { await deleteNote(n.id); await refresh(); }}>
