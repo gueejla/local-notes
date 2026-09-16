@@ -1,9 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
-import { type Note, listNotes, saveNote, deleteNote } from "./opfs";
-import { exportNotesToZip } from "./export";
+import { type Note, listNotes, saveNote, deleteNote } from "./lib/opfs";
+import { exportNotesToZip } from "@/lib/export";
+import { NoteItem } from "@/components/note/note";
 
 type Theme = "light" | "dark" | "solarized" | "cozy";
 const THEMES: Theme[] = ["light", "dark", "solarized", "cozy"];
+
+type Align = "left" | "center" | "right" | "between";
+const ALIGNS: { value: Align; label: string }[] = [
+  { value: "left", label: "Left" },
+  { value: "center", label: "Centered" },
+  { value: "right", label: "Right" },
+  { value: "between", label: "Space between" },
+];
 
 export default function App() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -12,11 +21,16 @@ export default function App() {
     return (localStorage.getItem("theme") as Theme) || "light";
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [align, setAlign] = useState<Align>(() => {
+    return (localStorage.getItem("align") as Align) || "left"
+  });
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("theme", theme);
-  }, [theme]);
+    document.documentElement.dataset.align = align; // ← add
+    localStorage.setItem("align", align);           // ← add
+  }, [theme, align]);
 
   const refresh = useCallback(async () => {
     setNotes(await listNotes());
@@ -74,6 +88,22 @@ export default function App() {
           </button>
         </section>
 
+        <section className="sidebar-section">
+          <h2>Text alignment</h2>
+          {ALIGNS.map(({ value, label }) => (
+            <label key={value} className="align-option">
+              <input
+                type="radio"
+                name="align"
+                value={value}
+                checked={align === value}
+                onChange={() => setAlign(value)}
+              />
+              {label}
+            </label>
+          ))}
+        </section>
+
         {/* Future sections go here — e.g. Import, Settings, About */}
       </aside>
 
@@ -99,7 +129,7 @@ export default function App() {
               onChange={(e) => setDraft({ ...draft, body: e.target.value })}
               className="body-input"
             />
-            <button onClick={persist}>Save</button>
+            <button onClick={persist}>Save</button>{" "}
             <button onClick={() => setDraft(null)}>Cancel</button>
           </div>
         ) : (
@@ -107,27 +137,19 @@ export default function App() {
         )}
 
         <ul className="note-list">
-          {notes.map((n) => (
-            <li key={n.id} className="note-item">
-              <div className="note-header">
-                <strong>{n.title || "(untitled)"}</strong>
-                <time dateTime={new Date(n.updatedAt).toISOString()}>
-                  {new Date(n.updatedAt).toLocaleString()}
-                </time>
-              </div>
-              <p>{n.body.slice(0, 120)}</p>
-              <button onClick={() => setDraft(n)}>Edit</button>{" "}
-              <button
-                onClick={async () => {
-                  await deleteNote(n.id);
-                  await refresh();
-                }}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+        {notes.map((n) => (
+          <NoteItem
+            key={n.id}
+            note={n}
+            onEdit={setDraft}
+            onDelete={async (id: string) => {
+              await deleteNote(id);
+              await refresh();
+            }}
+          />
+        ))}
+      </ul>
+
       </main>
 
       <footer className="app-footer">
