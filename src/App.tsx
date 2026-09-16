@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { type Note, listNotes, saveNote, deleteNote } from "./opfs";
+import { exportNotesToZip } from "./export";
 
 type Theme = "light" | "dark" | "solarized" | "cozy";
 const THEMES: Theme[] = ["light", "dark", "solarized", "cozy"];
@@ -100,6 +101,9 @@ export default function App() {
             </option>
           ))}
         </select>
+        <button onClick={() => exportNotesToZip().catch((e) => alert(String(e)))}>
+          Export all notes (.zip)
+        </button>
       </footer>
     </div>
   );
