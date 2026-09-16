@@ -9,7 +9,7 @@ const ALIGNS: { value: Align; label: string }[] = [
   { value: "left", label: "Left" },
   { value: "center", label: "Centered" },
   { value: "right", label: "Right" },
-  { value: "between", label: "Space between" },
+  { value: "between", label: "Space Between" },
 ];
 
 type Props = {
@@ -52,27 +52,30 @@ export function Sidebar({ sidebarOpen}: Props) {
       </section>
 
       <section className="sidebar-section">
+          <h2>Text Alignment</h2>
+          <label htmlFor="text-alignment" className="visually-hidden">
+          Text Alignment
+          </label>
+          <select
+          id="text-alignment"
+          value={align}
+          onChange={(e) => setAlign(e.target.value as Align)}
+          >
+          {ALIGNS.map(({value, label}) => (
+              <option key={value} value={value}>
+              {label}
+              </option>
+          ))}
+          </select>
+      </section>
+
+      <section className="sidebar-section">
           <h2>Export</h2>
           <button onClick={() => exportNotesToZip().catch((e) => alert(String(e)))}>
           Export all notes (.zip)
           </button>
       </section>
 
-      <section className="sidebar-section">
-          <h2>Text alignment</h2>
-          {ALIGNS.map(({ value, label }) => (
-          <label key={value} className="align-option">
-              <input
-              type="radio"
-              name="align"
-              value={value}
-              checked={align === value}
-              onChange={() => setAlign(value)}
-              />
-              {label}
-          </label>
-          ))}
-      </section>
     </aside>
   );
 }
