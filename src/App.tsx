@@ -45,6 +45,7 @@ export default function App() {
 
       <Sidebar
         sidebarOpen={sidebarOpen}
+        refresh={refresh}
       />
 
       {sidebarOpen && (
