@@ -1,7 +1,8 @@
 // src/export.ts
 // Exports all notes from OPFS into a downloadable zip of markdown files.
 import JSZip from "jszip";
-import { listNotes, type Note } from "@/lib/opfs";
+import { listNotes } from "@/lib/opfs";
+import type { Note } from "@/models/note";
 
 function pad(n: number): string {
   return String(n).padStart(2, "0");

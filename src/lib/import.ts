@@ -1,7 +1,8 @@
 // Imports notes from a zip of markdown files (format produced by export.ts)
 // back into OPFS. Existing notes with the same id are overwritten.
 import JSZip from "jszip";
-import { saveNote, type Note } from "@/lib/opfs";
+import { saveNote } from "@/lib/opfs";
+import type { Note } from "@/models/note";
 
 /** Parse "YYYY-MM-DD HH:MM:SS" (local time, as written by export) into epoch ms. */
 function parseLocalDateTime(s: string): number {

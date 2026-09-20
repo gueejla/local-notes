@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import { type Note, listNotes, saveNote, deleteNote } from "@/lib/opfs";
+import { listNotes, saveNote, deleteNote } from "@/lib/opfs";
 import { NoteItem } from "@/components/note/";
-import { Sidebar } from "./components/sidebar";
+import { Sidebar } from "@/components/sidebar";
+import type { Note } from "@/models/note";
 
-import '@/App.css'
-import '@/components/note/note.css'
-import '@/components/sidebar/sidebar.css'
-import '@/components/sidebar/colorThemes.css'
+import '@/App.css';
+import '@/components/note/note.css';
+import '@/components/sidebar/sidebar.css';
+import '@/components/sidebar/colorThemes.css';
 
 export default function App() {
   const [notes, setNotes] = useState<Note[]>([]);

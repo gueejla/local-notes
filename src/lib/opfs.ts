@@ -1,10 +1,4 @@
-export interface Note {
-  id: string;
-  title: string;
-  body: string;
-  updatedAt: number;
-  createdAt: number;
-}
+import type { Note } from '@/models/note'
 
 const encoder = new TextEncoder();
 
