@@ -2,17 +2,8 @@ import { useState, useEffect } from "react";
 import { exportNotesToZip } from "@/lib/export";
 import { importNotesFromZip } from "@/lib/import";
 import { useRef } from "react";
-
-type Theme = "light" | "dark" | "solarized" | "cozy";
-const THEMES: Theme[] = ["light", "dark", "solarized", "cozy"];
-
-type Align = "left" | "center" | "right" | "between";
-const ALIGNS: { value: Align; label: string }[] = [
-  { value: "left", label: "Left" },
-  { value: "center", label: "Centered" },
-  { value: "right", label: "Right" },
-  { value: "between", label: "Space Between" },
-];
+import { THEMES, type Theme } from "@/models/theme";
+import { ALIGNS, type Align } from "@/models/align";
 
 type Props = {
   sidebarOpen: boolean;

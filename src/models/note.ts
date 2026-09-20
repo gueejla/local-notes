@@ -4,4 +4,5 @@ export interface Note {
   body: string;
   updatedAt: number;
   createdAt: number;
+  tags?: string;
 }

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { listNotes, saveNote, deleteNote } from "@/lib/opfs";
 import { NoteItem } from "@/components/note/";
 import { Sidebar } from "@/components/sidebar";
+import { InputOrOrganize } from "@/components/inputOrOrganize";
 import type { Note } from "@/models/note";
 
 import '@/App.css';
@@ -15,12 +16,18 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const refresh = useCallback(async () => {
-    setNotes(await listNotes());
+    const notes = (await listNotes())
+    setNotes(notes);
   }, []);
 
   useEffect(() => {
     void listNotes().then(setNotes);
   }, []);
+
+  useEffect(() => {
+    const el = document.getElementById("note-input");
+    el?.scrollIntoView({ behavior: "smooth" });
+  }, [draft]);
 
   const newNote = () =>
     setDraft({ id: crypto.randomUUID(), title: "", body: "", updatedAt: Date.now(), createdAt: Date.now() });
@@ -57,7 +64,7 @@ export default function App() {
         <h1>local notes</h1>
 
         {draft ? (
-          <div>
+          <div id="note-input">
             <input
               placeholder="Title"
               value={draft.title}
@@ -75,7 +82,10 @@ export default function App() {
             <button onClick={() => setDraft(null)}>Cancel</button>
           </div>
         ) : (
-          <button onClick={newNote}>+ New note</button>
+          <div>
+            <button onClick={newNote}>+ New note</button>{" "}
+            <InputOrOrganize notes={notes} onSortedNotes={setNotes} />
+          </div>
         )}
 
         <ul className="note-list">
