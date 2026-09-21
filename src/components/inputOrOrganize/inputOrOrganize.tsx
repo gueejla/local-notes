@@ -10,15 +10,33 @@ import {
 type Props = {
   notes: Note[];
   onSortedNotes: (notes: Note[]) => void;
+  onFilteredNotes: (notes: Note[]) => void;
 };
 
-export function InputOrOrganize({ notes, onSortedNotes }: Props) {
+export function InputOrOrganize({ notes, onSortedNotes, onFilteredNotes }: Props) {
+  const [filterQuery, setFilterQuery] = useState(
+    () => localStorage.getItem("filterQuery") || "",
+  );
   const [sortNotesBy, setSortNotesBy] = useState<Sort>(() => {
     return (localStorage.getItem("sortBy") as Sort) || "updatedAt";
   });
   const [sortNotesDirection, setSortNotesDirection] = useState<SortDirection>(() => {
     return (localStorage.getItem("sortDirection") as SortDirection) || "Desc";
   });
+
+  useEffect(() => {
+    localStorage.setItem("filterQuery", filterQuery);
+    const normalizedQuery = filterQuery.trim().toLocaleLowerCase();
+    const filteredNotes = normalizedQuery
+      ? notes.filter((note) =>
+          [note.title, note.body, note.tags ?? ""].some((value) =>
+            value.toLocaleLowerCase().includes(normalizedQuery),
+          ),
+        )
+      : notes;
+
+    onFilteredNotes(filteredNotes);
+  }, [filterQuery, notes, onFilteredNotes]);
 
   useEffect(() => {
     localStorage.setItem("sortBy", sortNotesBy);
@@ -65,7 +83,15 @@ export function InputOrOrganize({ notes, onSortedNotes }: Props) {
             {direction}
           </option>
         ))}
-      </select>
+      </select>{" "}
+      <label htmlFor="filter-notes">Filter by: </label>
+      <input
+        id="filter-notes"
+        type="search"
+        value={filterQuery}
+        onChange={(e) => setFilterQuery(e.target.value)}
+        placeholder="Filter text"
+      />{" "}
     </>
   );
 }

@@ -12,9 +12,9 @@ import '@/components/sidebar/colorThemes.css';
 
 export default function App() {
   const [notes, setNotes] = useState<Note[]>([]);
+  const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [draft, setDraft] = useState<Note | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const refresh = useCallback(async () => {
     const notes = (await listNotes())
     setNotes(notes);
@@ -84,12 +84,16 @@ export default function App() {
         ) : (
           <div>
             <button onClick={newNote}>+ New note</button>{" "}
-            <InputOrOrganize notes={notes} onSortedNotes={setNotes} />
+            <InputOrOrganize
+              notes={notes}
+              onSortedNotes={setNotes}
+              onFilteredNotes={setFilteredNotes}
+            />
           </div>
         )}
 
         <ul className="note-list">
-        {notes.map((n) => (
+        {filteredNotes.map((n) => (
           <NoteItem
             key={n.id}
             note={n}
