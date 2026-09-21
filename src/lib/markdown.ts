@@ -2,7 +2,7 @@ import { marked } from 'marked';
 import DOMPurify from "isomorphic-dompurify";
 import type { Note } from '@/models/note';
 
-function convertMdToHtml(mdText: string) : string {
+export function convertMdToHtml(mdText: string) : string {
   const html = marked.parse(mdText) as string;
   const cleanHtml = DOMPurify.sanitize(html);
 
