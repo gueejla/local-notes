@@ -13,7 +13,7 @@ type Props = {
   onFilteredNotes: (notes: Note[]) => void;
 };
 
-export function InputOrOrganize({ notes, onSortedNotes, onFilteredNotes }: Props) {
+export function Organize({ notes, onSortedNotes, onFilteredNotes }: Props) {
   const [filterQuery, setFilterQuery] = useState(
     () => localStorage.getItem("filterQuery") || "",
   );
