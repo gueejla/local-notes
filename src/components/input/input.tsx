@@ -26,29 +26,31 @@ export function Input({draft, onSetDraft, refresh}: Props) {
 
   return(
     <>
-      {draft ? (
-        <div id="note-input">
-          <input
-            placeholder="Title"
-            value={draft.title}
-            onChange={(e) => onSetDraft({ ...draft, title: e.target.value })}
-            className="title-input"
-          />
-          <textarea
-            placeholder="Write your note…"
-            rows={10}
-            value={draft.body}
-            onChange={(e) => onSetDraft({ ...draft, body: e.target.value })}
-            className="body-input"
-          />
-          <button onClick={persist}>Save</button>{" "}
-          <button onClick={() => onSetDraft(null)}>Cancel</button>
-        </div>
-      ) : (
-        <div id="new-note" className="new-note">
-          <button onClick={newNote}>+ New note</button>
-        </div>
-      )}
+      <div className="new-note">
+        {draft ? (
+          <div id="note-input">
+            <input
+              placeholder="Title"
+              value={draft.title}
+              onChange={(e) => onSetDraft({ ...draft, title: e.target.value })}
+              className="title-input"
+            />
+            <textarea
+              placeholder="Write your note…"
+              rows={10}
+              value={draft.body}
+              onChange={(e) => onSetDraft({ ...draft, body: e.target.value })}
+              className="body-input"
+            />
+            <button onClick={persist}>Save</button>{" "}
+            <button onClick={() => onSetDraft(null)}>Cancel</button>
+          </div>
+        ) : (
+          <div id="new-note">
+            <button onClick={newNote}>+ New note</button>
+          </div>
+        )}
+      </div>
     </>
   )
 }
