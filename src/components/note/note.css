@@ -10,7 +10,7 @@
   text-align: right;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: baseline;
 }
 
 [data-align="left"] .note-header {
@@ -20,27 +20,16 @@
   align-items: baseline;
 }
 
-[data-align="left"] .note-header time {
-  margin-top: 0; /* undo the stacked-mode gap */
-}
-
 [data-align="left"] .note-body {
   text-align: left;
 }
 
 [data-align="between"] .note-header,
 [data-align="between"] .note-body {
-  text-align: justify;
-  align-items: center;
-  justify-content: space-between;
-  
+  text-align: justify;  
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
-}
-
-[data-align="between"] .note-header time {
-  margin-top: 0; /* undo the stacked-mode gap */
+  align-items: baseline;
 }
 
 .note-list {

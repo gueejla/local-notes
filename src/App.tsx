@@ -1,20 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
-import { listNotes, saveNote, deleteNote } from "@/lib/opfs";
+import { listNotes, deleteNote } from "@/lib/opfs";
 import { NoteItem } from "@/components/note/";
 import { Sidebar } from "@/components/sidebar";
-import { InputOrOrganize } from "@/components/inputOrOrganize";
+import { Organize } from "@/components/organize";
 import type { Note } from "@/models/note";
+import { Input } from "@/components/input";
 
 import '@/App.css';
 import '@/components/note/note.css';
 import '@/components/sidebar/sidebar.css';
 import '@/components/sidebar/colorThemes.css';
+import '@/components/input/input.css';
 
 export default function App() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [draft, setDraft] = useState<Note | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const refresh = useCallback(async () => {
     const notes = (await listNotes())
     setNotes(notes);
@@ -23,21 +26,6 @@ export default function App() {
   useEffect(() => {
     void listNotes().then(setNotes);
   }, []);
-
-  useEffect(() => {
-    const el = document.getElementById("note-input");
-    el?.scrollIntoView({ behavior: "smooth" });
-  }, [draft]);
-
-  const newNote = () =>
-    setDraft({ id: crypto.randomUUID(), title: "", body: "", updatedAt: Date.now(), createdAt: Date.now() });
-
-  const persist = async () => {
-    if (!draft) return;
-    await saveNote({ ...draft, updatedAt: Date.now() });
-    setDraft(null);
-    await refresh();
-  };
 
   return (
     <>
@@ -63,34 +51,16 @@ export default function App() {
       <main className="app">
         <h1>local notes</h1>
 
-        {draft ? (
-          <div id="note-input">
-            <input
-              placeholder="Title"
-              value={draft.title}
-              onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-              className="title-input"
-            />
-            <textarea
-              placeholder="Write your note…"
-              rows={10}
-              value={draft.body}
-              onChange={(e) => setDraft({ ...draft, body: e.target.value })}
-              className="body-input"
-            />
-            <button onClick={persist}>Save</button>{" "}
-            <button onClick={() => setDraft(null)}>Cancel</button>
-          </div>
-        ) : (
-          <div>
-            <button onClick={newNote}>+ New note</button>{" "}
-            <InputOrOrganize
-              notes={notes}
-              onSortedNotes={setNotes}
-              onFilteredNotes={setFilteredNotes}
-            />
-          </div>
-        )}
+        <Input 
+          draft={draft}
+          onSetDraft={setDraft}
+          refresh={refresh}
+        />
+        <Organize
+          notes={notes}
+          onSortedNotes={setNotes}
+          onFilteredNotes={setFilteredNotes}
+        />
 
         <ul className="note-list">
         {filteredNotes.map((n) => (
