@@ -39,6 +39,13 @@ export function Sidebar({ sidebarOpen, refresh }: Props) {
   };
   const fileRef = useRef<HTMLInputElement>(null);
 
+  const themeLabel = (id: string): string => {
+    return id
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+  }
+
   return (
     <aside id="app-sidebar" className={`sidebar ${sidebarOpen ? "open" : ""}`}>
       <section className="sidebar-section">
@@ -53,7 +60,7 @@ export function Sidebar({ sidebarOpen, refresh }: Props) {
         >
         {THEMES.map((t) => (
           <option key={t} value={t}>
-          {t.charAt(0).toUpperCase() + t.slice(1)}
+          {themeLabel(t)}
           </option>
         ))}
         </select>
