@@ -15,7 +15,7 @@
 }
 
 /* Solarized Light palette */
-[data-theme="solarized"] {
+[data-theme="solarized-light"] {
   --bg: #fdf6e3;
   --text: #657b83;
   --border: #eee8d5;
@@ -30,4 +30,31 @@
   --border: #d8cbb8;    /* light sand */
   --accent: #6b8e6f;    /* sage green */
   --input-bg: #faf6ee;  /* off-white parchment */
+}
+
+/* Hacker / Retro — phosphor green CRT terminal on black */
+[data-theme="hacker"] {
+  --bg: #0b0f0b;        /* near-black with a green cast */
+  --text: #33ff66;      /* phosphor green */
+  --border: #1c3d1c;    /* dim green grid */
+  --accent: #39ff14;    /* neon terminal green */
+  --input-bg: #0f1a0f;  /* faint green-lit panel */
+}
+
+/* Lavender — fun, soft pastel purple */
+[data-theme="lavender"] {
+  --bg: #f3effa;        /* pale lavender */
+  --text: #3a2f4d;      /* deep plum text */
+  --border: #ddd2f0;    /* light lilac border */
+  --accent: #8b5cf6;    /* vibrant violet accent */
+  --input-bg: #faf8ff;  /* near-white lilac panel */
+}
+
+/* Solarized Dark — official Ethan Schoonover palette */
+[data-theme="solarized-dark"] {
+  --bg: #002b36;        /* base03 */
+  --text: #839496;      /* base0 */
+  --border: #073642;    /* base02 */
+  --accent: #268bd2;    /* blue */
+  --input-bg: #073642;  /* base02 panel */
 }
