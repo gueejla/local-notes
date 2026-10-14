@@ -63,3 +63,11 @@
   overflow-wrap: break-word; /* breaks very long unbroken strings (URLs etc.) */
   margin: 8px 0;
 }
+
+.note-body-preview {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+  line-clamp: 7;
+  overflow: hidden;
+}

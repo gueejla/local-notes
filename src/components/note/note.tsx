@@ -29,8 +29,10 @@ export function NoteItem({ note, onEdit, onDelete }: Props) {
         </div>
 
         <div className="note-body">
-          {showFull ? <div dangerouslySetInnerHTML={{ __html: noteHtml.body }} />
-            : <p>`${note.body.slice(0, PREVIEW_LEN)}…`</p>}
+          <div
+            className={showFull ? undefined : "note-body-preview"}
+            dangerouslySetInnerHTML={{ __html: noteHtml.body }}
+          />
         </div>
 
         {isLong && (
